@@ -4,6 +4,7 @@ description: |
   AI Multi-Agent Team Collaboration for Company Deep Research Analysis. Use this skill when researching and analyzing a company (such as listed companies, investment targets, business analysis, etc.).
   Applicable scenarios: (1) Research target company's business model (2) Analyze financial status (3) Evaluate industry competition landscape (4) Track technology evolution (5) Assess user experience (6) Interpret management team (7) Review historical performance (8) Analyze macro environment impact
   Workflow: Create Team → Assign Tasks → Independent Analysis → Cross-domain Discussion → Integrate Conclusions
+  Optional: Enable Tushare for Chinese listed companies to get real-time financial data
 ---
 
 # Company Research Team (Company Research Team)
@@ -93,6 +94,26 @@ Create comprehensive analysis document:
 - **Industry Data**: Industry Associations, Third-party Research Reports
 - **User Feedback**: Social Media, Autohome, DongcheDi
 - **News**: Public media reports
+
+### Tushare 数据 (可选)
+
+对于中国A股上市公司，可以启用Tushare获取更精准的财务数据：
+
+**配置方法：**
+1. 安装Tushare: `pip install tushare -i https://pypi.tuna.tsinghua.edu.cn/simple`
+2. 在 [Tushare.pro](https://tushare.pro/register) 注册获取token
+3. 设置环境变量: `export TUSHARE_TOKEN=your_token`
+
+**可用数据：**
+| 数据类型 | 接口 | 说明 |
+|----------|------|------|
+| 股票行情 | daily, daily_basic | 每日OHLCV、PE、PB等 |
+| 财务报表 | income, balancesheet, cashflow | 季报/年报数据 |
+| 财务指标 | fina_indicator | ROE、ROA、毛利率等 |
+| 融资融券 | margin | 融资融券数据 |
+| 资金流向 | moneyflow | 主力资金流向 |
+| 宏观数据 | cn_gdp, cn_cpi, cn_pmi, shibor | GDP、CPI、利率等 |
+| 股东数据 | top10_holders, stk_managers | 股东结构、管理层 |
 
 ## Output Requirements
 

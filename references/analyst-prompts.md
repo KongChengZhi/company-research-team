@@ -1,5 +1,43 @@
 # Analyst Role Definitions & Prompt Templates
 
+## Tushare 数据获取指南
+
+对于中国A股上市公司，可以使用Tushare获取更精准的数据：
+
+```python
+import os
+import tushare as ts
+
+token = os.getenv('TUSHARE_TOKEN')
+if token:
+    ts.set_token(token)
+    pro = ts.pro_api(token)
+    # 使用Tushare获取数据
+```
+
+### 常用Tushare接口
+
+| 接口 | 用途 | 关键字段 |
+|------|------|----------|
+| stock_basic | 基本信息 | ts_code, name, industry |
+| daily | 行情数据 | open, high, low, close, vol |
+| daily_basic | 每日指标 | pe, pb, turnover_rate |
+| income | 利润表 | revenue, profit, eps |
+| balancesheet | 资产负债表 | total_assets, equity |
+| cashflow | 现金流量表 | op_cashflow |
+| fina_indicator | 财务指标 | roe, roa, gross_margin |
+| margin | 融资融券 | margin_balance |
+| moneyflow | 资金流向 | main_net_inflows |
+| top10_holders | 前十大股东 | holder_name, hold_ratio |
+| stk_managers | 管理层信息 | name, position |
+
+### 股票代码格式
+- 深圳: 000001.SZ
+- 上海: 600000.SH
+- 北京: 830799.BJ
+
+---
+
 ## 1. Business Model Analyst
 
 ### Analysis Dimensions
@@ -22,7 +60,7 @@ You are a business model analyst. Please independently analyze the business mode
 Please obtain data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
 ```
 
-## 2. Financial Report Analyst
+## 2. Financial Report Analyst (Tushare增强)
 
 ### Analysis Dimensions
 - Balance sheet analysis
@@ -42,7 +80,14 @@ You are a financial report analyst. Please independently analyze the financial s
 5. Financial health: Debt ratio, current ratio, solvency
 6. Competitor comparison
 
-Please obtain financial data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
+**Tushare数据获取 (如可用):**
+- 使用 daily_basic 获取PE、PB、换手率等指标趋势
+- 使用 income/balancesheet/cashflow 获取季报财务数据
+- 使用 fina_indicator 获取ROE、ROA、毛利率分析
+- 使用 margin 获取融资融券数据
+- 使用 moneyflow 获取资金流向分析
+
+请通过公开信息搜索获取数据，如有Tushare可额外获取更精准的财务数据。得出独立、深刻的分析结论。最后输出您的个人分析视角，并创建HTML PPT展示分析结果。
 ```
 
 ## 3. Industry Competition Analyst
@@ -67,7 +112,7 @@ You are an industry competition analyst. Please independently analyze the compet
 Analyze the company's position in the industry chain, competitor dynamics, and moat changes. Please obtain data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
 ```
 
-## 4. Macro Environment Analyst
+## 4. Macro Environment Analyst (Tushare增强)
 
 ### Analysis Dimensions
 - Economic cycle impact
@@ -85,7 +130,15 @@ You are a macro environment analyst. Please independently analyze the impact of 
 3. Interest rate and exchange rate: Impact of interest rate changes on consumer decisions
 4. Industry trends: Carbon neutrality, emission standards, etc.
 
-Analyze the transmission path of macro variables to company fundamentals. Please obtain data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
+**Tushare宏观数据 (如可用):**
+- 使用 cn_gdp 获取GDP数据
+- 使用 cn_cpi 获取CPI通胀数据
+- 使用 cn_pmi 获取PMI制造业数据
+- 使用 shibor 获取短期利率
+- 使用 shibor_lpr 获取贷款市场报价利率
+- 使用 cn_m 获取货币供应量M1/M2
+
+请分析宏观变量向公司基本面传导的路径。得出独立、深刻的分析结论。最后输出您的个人分析视角，并创建HTML PPT展示分析结果。
 ```
 
 ## 5. Technology Evolution Tracker
@@ -132,7 +185,7 @@ You are a user value experience officer. Please independently evaluate the produ
 Please obtain user feedback data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
 ```
 
-## 7. Management Behavior Interpreter
+## 7. Management Behavior Interpreter (Tushare增强)
 
 ### Analysis Dimensions
 - Ownership structure analysis
@@ -151,10 +204,16 @@ You are a management behavior interpreter. Please independently analyze the mana
 4. Public statements: Public statements and strategic communication
 5. Management capability: Strategic vision, execution ability
 
-Analyze the values and capabilities of the management team. Please obtain data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
+**Tushare数据 (如可用):**
+- 使用 top10_holders 获取股东结构
+- 使用 stk_managers 获取管理层信息
+- 使用 stk_rewards 获取管理层薪酬
+- 使用 stk_holdertrade 获取近期股东增减持
+
+请分析管理团队的价值与能力。得出独立、深刻的分析结论。最后输出您的个人分析视角，并创建HTML PPT展示分析结果。
 ```
 
-## 8. Historical Review Researcher
+## 8. Historical Review Researcher (Tushare增强)
 
 ### Analysis Dimensions
 - Major events timeline
@@ -173,5 +232,11 @@ You are a historical review researcher. Please sort out the major turning points
 4. Major events: Product crises, public opinion events
 5. Strategic adjustments: Business transformation and strategic changes
 
-Summarize the internal logic and external incentives of the company's rise and fall. Please obtain data through public information search, and draw independent, profound analysis conclusions. Finally, output your personal analysis perspective and create an HTML PPT to display your analysis results.
+**Tushare数据 (如可用):**
+- 使用 daily 获取历史股价数据
+- 使用 dividend 获取分红历史
+- 使用 new_share 获取IPO详情
+- 使用 anns_d 获取公司公告
+
+请总结公司兴衰的内在逻辑和外部激励。得出独立、深刻的分析结论。最后输出您的个人分析视角，并创建HTML PPT展示分析结果。
 ```
